@@ -33,6 +33,11 @@
     open_dict(d{a:1}, D),
     D = d{a:2, b:2}.
 
+'close open dict 01' :-
+    open_dict(d{a:1}, D),
+    close_dict(D, D),
+    D == d{a:1}.
+
 'contains/3 01' :-
     open_dict(a{}, O),
     contains(O, _{b:2}),

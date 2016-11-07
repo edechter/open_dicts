@@ -2,6 +2,7 @@
 :- module(open_dicts, [
               open_dict/1,
               open_dict/2,
+              close_dict/1,
               close_dict/2,
               contains/2,
               op(200, yfx, '.^')
@@ -47,6 +48,10 @@ open_dict(Open) :-
 close_dict(Open, Closed) :-
     must_be(open_dict, Open),
     get_attr(Open, open_dicts, Closed).
+
+%!    close_dict(+Open)
+close_dict(O) :-
+    close_dict(O, O). 
 
 %!    contains(+Open, Data) is nondet
 %
