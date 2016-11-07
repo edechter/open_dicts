@@ -21,6 +21,18 @@
     open_dict(d{a:1}, O2),
     O1 \= O2.
 
+'unify open dict with close dict 01' :-
+    open_dict(d{a:2}, D),
+    D = d{a:2}.
+
+'unify open dict with close dict 02' :-
+    open_dict(d{a:2}, D),
+    D = d{a:2, b:2}.
+
+'unify open dict with close dict 03'(fail) :-
+    open_dict(d{a:1}, D),
+    D = d{a:2, b:2}.
+
 'contains/3 01' :-
     open_dict(a{}, O),
     contains(O, _{b:2}),
@@ -56,8 +68,26 @@
 'chain of contains/3' :-
     open_dict(O),
     contains(O, _{a:1}),
-    contains( O, _{b:2}),
+    contains(O, _{b:2}),
     contains(O, a{c:3}),
     close_dict(O, a{a:1, b:2, c:3}).
 
 
+'syntactic sugar 01' :-
+    A = _{a:2, ... : ...},
+    A = _{b:3, ... : ...},
+    A = _{a:2, b:3}.
+
+'syntactic sugar 02' :-
+    _{b:3, c:X, ... : ...} = _{c: foo, a:2, ... : ...},
+    X == foo.
+
+'syntactic sugar 03' :-
+    D = _{a:1, b:2, ... : ...}, 
+    A = D.^a,
+    A == 1.
+
+'syntactic sugar 04' :-
+    A = _{a: _{b:1, ... : ...}, ... : ...},
+    B = A.^a.^b,
+    B == 1.
