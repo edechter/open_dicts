@@ -112,26 +112,18 @@ attribute_goals(Open) -->
 
 user:function_expansion(In, Out, Guard) :-    
     is_dict(In),
-    writeln(in1-Xs),
     In =.. Xs,
-    writeln(xs-Xs),
     length(Dots, 2), 
     append([Ys0, Dots, Ys1], Xs),
-    Dots == ['...', '...'],
+    Dots == ['...', '...'], % to avoid unifying dots with variables in list
     append([Ys0, Ys1], Ys),
-    writeln(ys-Ys),
     D =.. Ys,
-    Guard = open_dict(D, Out),
-    writeln(in1-In),
-    writeln(out1-Out),
-    writeln(guard1-Guard).
+    Guard = open_dict(D, Out).
 
 user:function_expansion(In, Out, Guard) :-
     nonvar(In),
-    writeln(in-In),
     In = Open .^ KeyPath,
-    Guard = (open_dicts:open_dict_get(KeyPath, Open, Out)),
-    writeln(guard-Guard).
+    Guard = (open_dicts:open_dict_get(KeyPath, Open, Out)).
 
     
     
