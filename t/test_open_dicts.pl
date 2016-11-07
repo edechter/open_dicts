@@ -79,20 +79,20 @@
 
 
 'syntactic sugar 01' :-
-    A = _{a:2, ... : ...},
-    A = _{b:3, ... : ...},
+    A = _{a:2}+,
+    A = _{b:3}+,
     A = _{a:2, b:3}.
 
 'syntactic sugar 02' :-
-    _{b:3, c:X, ... : ...} = _{c: foo, a:2, ... : ...},
+    _{b:3, c:X}+ = _{c: foo, a:2}+,
     X == foo.
 
 'syntactic sugar 03' :-
-    D = _{a:1, b:2, ... : ...}, 
+    D = _{a:1, b:2}+, 
     A = D.^a,
     A == 1.
 
 'syntactic sugar 04' :-
-    A = _{a: _{b:1, ... : ...}, ... : ...},
+    A = _{a: _{b:1}+ }+,
     B = A.^a.^b,
     B == 1.

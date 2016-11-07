@@ -5,12 +5,11 @@
               close_dict/1,
               close_dict/2,
               contains/2,
-              op(200, yfx, '.^')
+              op(210, yfx, '.^'),
+              op(200, yf, '+')
           ]).
 
-/** <module> Brief
-
-Description
+/** <module> Open Dicts for SWI Prolog
 
 @author:Eyal Dechter <eyaldechter@gmail.com>
 
@@ -21,7 +20,9 @@ Description
 %% ===============
 :- use_module(library(function_expansion)).
 
-:- op(200, yfx, '.^').
+
+:- op(210, yfx, '.^').
+:- op(200, yf, '+').
 
 
 :- multifile error:has_type/2.
@@ -104,8 +105,22 @@ attr_unify_hook(Dict, Other) :-
     ).
 
 attribute_goals(Open) -->
-    {get_attr(Open, open_dicts, Dict)},
+    {get_attr(Open, open_dicts, Dict)},    
     [open_dict(Dict, Open)].
+
+
+:- multifile user:portray/1.
+user:portray(V) :-
+    get_attr(V, open_dicts, D),
+    format('~p', [open_dict(D, V)]).
+    
+user:portray(V) :-
+    nonvar(V),
+    V = open_dict(Dict, Open),
+    format('~@ = ~p+', [write_term(Open, [attributes(ignore), numbervars(true)]), Dict]).
+    
+    
+    
     
 
 
@@ -115,20 +130,15 @@ attribute_goals(Open) -->
 
 :- multifile user:function_expansion/2.
 
-user:function_expansion(In, Out, Guard) :-    
-    is_dict(In),
-    In =.. Xs,
-    length(Dots, 2), 
-    append([Ys0, Dots, Ys1], Xs),
-    Dots == ['...', '...'], % to avoid unifying dots with variables in list
-    append([Ys0, Ys1], Ys),
-    D =.. Ys,
+user:function_expansion(In, Out, Guard) :-
+    nonvar(In),
+    In = D + , 
     Guard = open_dict(D, Out).
 
 user:function_expansion(In, Out, Guard) :-
     nonvar(In),
-    In = Open .^ KeyPath,
-    Guard = (open_dicts:open_dict_get(KeyPath, Open, Out)).
+    In = Open .^ KeyPath,    
+    Guard = (open_dict(Open), open_dicts:open_dict_get(KeyPath, Open, Out)).
 
     
     
