@@ -27,7 +27,7 @@
     close_dict(O, a{b:2}).
 
 'contains/3 02' :-
-    open_dict(a{b:X}, O),
+    open_dict(a{b:_}, O),
     contains(O, _{b:2}),
     close_dict(O, a{b:2}).
 
